@@ -1,0 +1,72 @@
+name: publish-npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify release
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Upgrade npm for trusted publishing support
+        run: npm install --global npm@^11.15.0
+
+      - name: Validate tag matches package version
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          TAG="${{ github.event.release.tag_name }}"
+          test "$TAG" = "v$VERSION"
+          echo "VERSION_GATE=PASS version=$VERSION tag=$TAG"
+
+      - name: Install and test
+        run: |
+          npm ci
+          npm run check
+
+  publish:
+    name: Publish to npm
+    needs: verify
+    runs-on: ubuntu-24.04
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+
+      - name: Upgrade npm for trusted publishing support
+        run: npm install --global npm@^11.15.0
+
+      - name: Install
+        run: npm ci
+
+      - name: Publish with npm Trusted Publishing
+        run: npm publish --access public

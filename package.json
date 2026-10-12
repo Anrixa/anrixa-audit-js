@@ -1,0 +1,64 @@
+{
+  "name": "@anrixa/audit",
+  "version": "0.1.0",
+  "description": "Deterministic audit gates, evidence reports, and SHA-256 verification for Node.js workflows.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Anrixa",
+  "homepage": "https://github.com/Anrixa/anrixa-audit-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Anrixa/anrixa-audit-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Anrixa/anrixa-audit-js/issues"
+  },
+  "keywords": [
+    "audit",
+    "deterministic",
+    "evidence",
+    "validation",
+    "sha256",
+    "integrity",
+    "manifest",
+    "verification",
+    "anrixa"
+  ],
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./checks": {
+      "types": "./checks.d.ts",
+      "import": "./src/checks.js",
+      "default": "./src/checks.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "anrixa-audit": "./bin/anrixa-audit.js"
+  },
+  "files": [
+    "src/",
+    "bin/",
+    "index.d.ts",
+    "checks.d.ts",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "lint": "node scripts/lint.mjs",
+    "check": "npm run lint && npm test && npm pack --dry-run"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

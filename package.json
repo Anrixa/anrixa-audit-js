@@ -8,7 +8,7 @@
   "homepage": "https://github.com/Anrixa/anrixa-audit-js#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Anrixa/anrixa-audit-js.git"
+    "url": "git+https://github.com/Anrixa/anrixa-audit-js.git"
   },
   "bugs": {
     "url": "https://github.com/Anrixa/anrixa-audit-js/issues"
@@ -41,7 +41,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "anrixa-audit": "./bin/anrixa-audit.js"
+    "anrixa-audit": "bin/anrixa-audit.js"
   },
   "files": [
     "src/",
